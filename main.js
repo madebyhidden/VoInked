@@ -403,12 +403,63 @@ function startGlobalKeyListener() {
   }
 }
 
+function checkForUpdates() {
+  const options = {
+    hostname: 'api.github.com',
+    path: '/repos/madebyhidden/VoInked/releases/latest',
+    method: 'GET',
+    headers: {
+      'User-Agent': 'VoiceInk-App'
+    }
+  };
+
+  const req = https.request(options, (res) => {
+    let data = '';
+    res.on('data', (chunk) => { data += chunk; });
+    res.on('end', () => {
+      try {
+        if (res.statusCode !== 200) {
+          console.warn(`Update check failed with status code ${res.statusCode}`);
+          return;
+        }
+        const release = JSON.parse(data);
+        if (!release.tag_name) return;
+        const latestVersion = release.tag_name.replace(/^v/, ''); // remove leading 'v'
+        const currentVersion = app.getVersion();
+        
+        console.log(`Update check: current version ${currentVersion}, latest version ${latestVersion}`);
+        
+        if (latestVersion !== currentVersion) {
+          setTimeout(() => {
+            if (mainWindow && !mainWindow.isDestroyed()) {
+              mainWindow.webContents.send('update-available', {
+                version: release.tag_name,
+                notes: release.body,
+                url: release.html_url
+              });
+            }
+          }, 5000);
+        }
+      } catch (err) {
+        console.error('Failed to parse update release data:', err);
+      }
+    });
+  });
+
+  req.on('error', (err) => {
+    console.error('Update check request error:', err);
+  });
+
+  req.end();
+}
+
 // App lifecycle
 app.whenReady().then(() => {
   createMainWindow();
   createOverlayWindow();
   createTray();
   startGlobalKeyListener(); // Start background Win+Ctrl hook listener
+  checkForUpdates();
 
   // Register backup keyboard shortcut Ctrl+Alt+R
   globalShortcut.register('CommandOrControl+Alt+R', () => {

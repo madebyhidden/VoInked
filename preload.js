@@ -60,6 +60,11 @@ contextBridge.exposeInMainWorld('electronAPI', {
     ipcRenderer.on('native-setup-progress', subscription);
     return () => ipcRenderer.removeListener('native-setup-progress', subscription);
   },
+  onUpdateAvailable: (callback) => {
+    const subscription = (event, data) => callback(data);
+    ipcRenderer.on('update-available', subscription);
+    return () => ipcRenderer.removeListener('update-available', subscription);
+  },
   checkFileExists: (filePath) => ipcRenderer.invoke('check-file-exists', filePath),
   getUserDataPath: () => ipcRenderer.invoke('get-user-data-path')
 });

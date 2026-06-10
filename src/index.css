@@ -1,21 +1,21 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
 
 :root {
-  --bg-dark: #161616;
-  --bg-sidebar: rgba(30, 30, 30, 0.6);
-  --bg-panel: rgba(36, 36, 36, 0.7);
-  --bg-glass: rgba(45, 45, 45, 0.45);
-  --bg-glass-hover: rgba(55, 55, 55, 0.6);
-  --border-glass: rgba(255, 255, 255, 0.07);
-  --border-glass-active: rgba(255, 255, 255, 0.15);
+  --bg-dark: #f4f5f8;
+  --bg-sidebar: #f3f4f6;
+  --bg-panel: #ffffff;
+  --bg-glass: rgba(255, 255, 255, 0.7);
+  --bg-glass-hover: rgba(243, 244, 246, 0.9);
+  --border-glass: rgba(0, 0, 0, 0.08);
+  --border-glass-active: rgba(0, 0, 0, 0.15);
   
   --accent-blue: #007aff;
-  --accent-blue-glow: rgba(0, 122, 255, 0.2);
-  --accent-gray: #555558;
+  --accent-blue-glow: rgba(0, 122, 255, 0.15);
+  --accent-gray: #d1d1d6;
   
-  --text-primary: #ffffff;
-  --text-secondary: #a0a0a5;
-  --text-muted: #6e6e73;
+  --text-primary: #1d1d1f;
+  --text-secondary: #4b5563;
+  --text-muted: #86868b;
   --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
   
@@ -44,10 +44,10 @@ body {
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: rgba(0, 0, 0, 0.05);
+  background: rgba(0, 0, 0, 0.02);
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(0, 0, 0, 0.12);
   border-radius: 3px;
 }
 ::-webkit-scrollbar-thumb:hover {
@@ -68,15 +68,13 @@ body {
   -webkit-backdrop-filter: blur(30px);
   border: 1px solid var(--border-glass);
   border-radius: 12px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04), 0 1px 3px rgba(0, 0, 0, 0.02);
 }
 
 /* Electron Titlebar Dragging */
 .titlebar {
   height: 44px;
-  background: rgba(30, 30, 30, 0.7);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  background: var(--bg-sidebar);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -91,7 +89,7 @@ body {
   font-size: 13px;
   font-weight: 600;
   letter-spacing: 0.02em;
-  color: var(--text-secondary);
+  color: var(--text-primary);
   display: flex;
   align-items: center;
   gap: 8px;
@@ -173,24 +171,23 @@ body {
 }
 
 .neon-button.secondary {
-  background-color: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background-color: rgba(0, 0, 0, 0.04);
+  border: 1px solid rgba(0, 0, 0, 0.06);
   color: var(--text-primary);
 }
 
 .neon-button.secondary:hover {
-  background-color: rgba(255, 255, 255, 0.12);
-  border-color: rgba(255, 255, 255, 0.12);
+  background-color: rgba(0, 0, 0, 0.07);
 }
 
 .neon-button.secondary:active {
-  background-color: rgba(255, 255, 255, 0.05);
+  background-color: rgba(0, 0, 0, 0.02);
 }
 
 /* Form Controls */
 .input-field {
-  background: rgba(0, 0, 0, 0.25);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.12);
   border-radius: 6px;
   color: var(--text-primary);
   padding: 8px 12px;
@@ -202,6 +199,7 @@ body {
 
 .input-field:focus {
   border-color: var(--accent-blue);
+  box-shadow: 0 0 0 2px var(--accent-blue-glow);
 }
 
 .toggle-switch {
@@ -224,8 +222,8 @@ body {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  background-color: rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(0, 0, 0, 0.05);
   transition: .2s;
   border-radius: 20px;
 }
@@ -240,6 +238,7 @@ body {
   background-color: #ffffff;
   transition: .2s;
   border-radius: 50%;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
 }
 
 input:checked + .toggle-slider {
