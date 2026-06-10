@@ -205,11 +205,10 @@ export default function ModelsManager({ config, onSaveConfig }) {
         <h2 style={{ fontSize: '20px', fontWeight: 700 }}>Hugging Face Models Manager</h2>
       </div>
 
-      {/* Dynamic format notice info card */}
       <div className="glass" style={{ padding: '12px 16px', borderRadius: '8px', border: '1px solid rgba(0, 122, 255, 0.2)', background: 'rgba(0, 122, 255, 0.03)', display: 'flex', gap: '10px', alignItems: 'flex-start' }}>
         <Info size={16} style={{ color: 'var(--accent-blue)', marginTop: '2px', flexShrink: 0 }} />
         <div style={{ fontSize: '12px', lineHeight: 1.4, color: 'var(--text-secondary)' }}>
-          <strong style={{ color: '#fff' }}>Важно о форматах:</strong> Оригинальный voiceink (для macOS) использует GGML (.bin) модели. Данный мультиплатформенный клон использует движок ONNX (через Transformers.js). Для работы с Large v3 Turbo, пожалуйста, загружайте <strong style={{ color: 'var(--accent-blue)' }}>onnx-community/whisper-large-v3-turbo</strong> вместо GGML-файлов.
+          <strong style={{ color: 'var(--text-primary)' }}>Важно о форматах:</strong> Оригинальный voiceink (для macOS) использует GGML (.bin) модели. Данный мультиплатформенный клон использует движок ONNX (через Transformers.js). Для работы с Large v3 Turbo, пожалуйста, загружайте <strong style={{ color: 'var(--accent-blue)' }}>onnx-community/whisper-large-v3-turbo</strong> вместо GGML-файлов.
         </div>
       </div>
 
@@ -272,7 +271,7 @@ export default function ModelsManager({ config, onSaveConfig }) {
                 }}
               >
                 <div>
-                  <h4 style={{ fontWeight: 600, fontSize: '13px', color: '#fff' }}>{modelId}</h4>
+                  <h4 style={{ fontWeight: 600, fontSize: '13px', color: 'var(--text-primary)' }}>{modelId}</h4>
                   <span style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>
                     {isActive ? 'Loaded & Active' : 'Cached Offline'}
                   </span>
@@ -311,7 +310,7 @@ export default function ModelsManager({ config, onSaveConfig }) {
             placeholder="Search Hugging Face models..." 
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            style={{ flex: 1, background: 'rgba(0,0,0,0.2)' }}
+            style={{ flex: 1 }}
           />
           <button type="submit" className="neon-button" style={{ width: '100px' }} disabled={isSearching}>
             {isSearching ? <RefreshCw className="animate-spin" size={14} /> : <Search size={14} />}
@@ -343,7 +342,7 @@ export default function ModelsManager({ config, onSaveConfig }) {
                 >
                   <div>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                      <strong style={{ fontSize: '13px', color: '#fff' }}>{rec.name}</strong>
+                      <strong style={{ fontSize: '13px', color: 'var(--text-primary)' }}>{rec.name}</strong>
                       <span style={{ fontSize: '10px', color: 'var(--text-secondary)' }}>{rec.size}</span>
                     </div>
                     <p style={{ fontSize: '11px', color: 'var(--text-secondary)', marginTop: '4px', lineHeight: 1.3 }}>{rec.desc}</p>
@@ -412,7 +411,7 @@ export default function ModelsManager({ config, onSaveConfig }) {
                     }}
                   >
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '2px', minWidth: 0, flex: 1, marginRight: '12px' }}>
-                      <strong style={{ fontSize: '12px', color: '#fff', textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap' }}>{model.id}</strong>
+                      <strong style={{ fontSize: '12px', color: 'var(--text-primary)', textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap' }}>{model.id}</strong>
                       <div style={{ display: 'flex', gap: '8px', alignItems: 'center', flexWrap: 'wrap' }}>
                         <span style={{ fontSize: '10px', color: 'var(--text-muted)' }}>Downloads: {model.downloads.toLocaleString()}</span>
                         

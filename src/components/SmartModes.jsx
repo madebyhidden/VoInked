@@ -184,14 +184,14 @@ export default function SmartModes({ modes, onUpdateModes }) {
                   <div 
                     style={{ 
                       marginTop: '6px', 
-                      background: 'rgba(0, 0, 0, 0.15)', 
+                      background: 'rgba(0, 0, 0, 0.03)', 
                       padding: '8px 12px', 
                       borderRadius: '6px', 
                       fontSize: '11px', 
                       fontFamily: 'var(--font-mono)',
                       color: 'var(--text-secondary)',
                       whiteSpace: 'pre-wrap',
-                      border: '1px solid rgba(255, 255, 255, 0.02)'
+                      border: '1px solid var(--border-glass)'
                     }}
                   >
                     {mode.prompt}

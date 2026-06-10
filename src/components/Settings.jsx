@@ -29,6 +29,8 @@ export default function Settings({ config, onSaveConfig }) {
   
   // Status showing saved
   const [isSavedTextVisible, setIsSavedTextVisible] = useState(false);
+  const [checkingUpdates, setCheckingUpdates] = useState(false);
+  const [manualUpdateMsg, setManualUpdateMsg] = useState('');
 
   const updateConfig = (updatedFields) => {
     const newConfig = {
@@ -55,6 +57,34 @@ export default function Settings({ config, onSaveConfig }) {
     setTimeout(() => {
       setIsSavedTextVisible(false);
     }, 1500);
+  };
+
+  const handleCheckUpdatesManual = async () => {
+    setCheckingUpdates(true);
+    setManualUpdateMsg('');
+    try {
+      const response = await fetch('https://api.github.com/repos/madebyhidden/VoInked/releases/latest');
+      if (!response.ok) {
+        throw new Error(`Server returned status ${response.status}`);
+      }
+      const data = await response.json();
+      if (data.tag_name) {
+        const latest = data.tag_name.replace(/^v/, '');
+        const current = '0.0.0';
+        if (latest !== current) {
+          setManualUpdateMsg(`Доступна новая версия ${data.tag_name}! Скачайте её с GitHub.`);
+        } else {
+          setManualUpdateMsg('У вас установлена последняя версия VoInked.');
+        }
+      } else {
+        setManualUpdateMsg('Не удалось получить информацию о версии.');
+      }
+    } catch (err) {
+      console.error(err);
+      setManualUpdateMsg(`Ошибка проверки обновлений: ${err.message}`);
+    } finally {
+      setCheckingUpdates(false);
+    }
   };
 
   const performHardwareCheck = async () => {
@@ -447,7 +477,7 @@ export default function Settings({ config, onSaveConfig }) {
             className="input-field"
             value={language}
             onChange={(e) => handleLanguageChange(e.target.value)}
-            style={{ width: '100%', background: 'rgba(0,0,0,0.25)' }}
+            style={{ width: '100%' }}
           >
             <option value="auto">Auto Detect (Whisper only)</option>
             <option value="ru-RU">Russian (Русский)</option>
@@ -469,7 +499,7 @@ export default function Settings({ config, onSaveConfig }) {
             onBlur={(e) => handleTextBlur('shortcut', e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder="Ctrl+Alt+R"
-            style={{ width: '100%', background: 'rgba(0,0,0,0.25)' }}
+            style={{ width: '100%' }}
           />
           <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>
             Press this key combination anywhere on your system to start or stop recording.
@@ -483,7 +513,7 @@ export default function Settings({ config, onSaveConfig }) {
             className="input-field"
             value={pasteMethod}
             onChange={(e) => handlePasteMethodChange(e.target.value)}
-            style={{ width: '100%', background: 'rgba(0,0,0,0.25)' }}
+            style={{ width: '100%' }}
           >
             <option value="ctrl_v">Ctrl + V (Стандартный)</option>
             <option value="ctrl_shift_v">Ctrl + Shift + V (Без форматирования)</option>
@@ -507,11 +537,34 @@ export default function Settings({ config, onSaveConfig }) {
             onBlur={(e) => handleTextBlur('geminiKey', e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder="AIzaSy..."
-            style={{ width: '100%', background: 'rgba(0,0,0,0.25)', fontFamily: 'monospace' }}
+            style={{ width: '100%', fontFamily: 'monospace' }}
           />
           <div style={{ fontSize: '11px', color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', gap: '4px' }}>
             <HelpCircle size={12} /> Used for advanced writing formatting modes and the conversational AI voice assistant.
           </div>
+        </div>
+
+        {/* Check for Updates */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', borderTop: '1px solid var(--border-glass)', paddingTop: '16px', marginTop: '4px' }}>
+          <label style={{ fontWeight: 600, fontSize: '13px' }}>Проверка обновлений (App Update)</label>
+          <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+            <button
+              className="neon-button secondary"
+              onClick={handleCheckUpdatesManual}
+              style={{ width: 'fit-content' }}
+              disabled={checkingUpdates}
+            >
+              {checkingUpdates ? 'Проверка...' : 'Проверить обновления'}
+            </button>
+            <span style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
+              Текущая версия: <strong>0.0.0</strong>
+            </span>
+          </div>
+          {manualUpdateMsg && (
+            <div style={{ fontSize: '12px', color: manualUpdateMsg.includes('новая версия') ? 'var(--accent-blue)' : 'var(--text-secondary)', marginTop: '4px', fontWeight: 500 }}>
+              {manualUpdateMsg}
+            </div>
+          )}
         </div>
       </div>
 
@@ -528,7 +581,7 @@ export default function Settings({ config, onSaveConfig }) {
             className="input-field"
             value={runtime}
             onChange={(e) => handleRuntimeChange(e.target.value)}
-            style={{ width: '100%', background: 'rgba(0,0,0,0.25)' }}
+            style={{ width: '100%' }}
           >
             <option value="web">Web (Transformers.js v3 - WebGPU/WASM)</option>
             <option value="whisper_cpp">whisper.cpp (Native C++ Binary)</option>
@@ -563,7 +616,6 @@ export default function Settings({ config, onSaveConfig }) {
                 className="input-field"
                 value={selectedModel}
                 onChange={(e) => handleModelChange(e.target.value)}
-                style={{ background: 'rgba(0,0,0,0.25)' }}
               >
                 <option value="Xenova/whisper-tiny">Tiny (75MB) - Fastest</option>
                 <option value="Xenova/whisper-base">Base (140MB) - Balanced</option>
@@ -607,7 +659,7 @@ export default function Settings({ config, onSaveConfig }) {
                 className="input-field"
                 value={device}
                 onChange={(e) => handleDeviceChange(e.target.value)}
-                style={{ width: '100%', background: 'rgba(0,0,0,0.25)' }}
+                style={{ width: '100%' }}
               >
                 <option value="webgpu">GPU (WebGPU) - Highly Recommended</option>
                 <option value="wasm">CPU (WASM) - CPU Fallback</option>
@@ -624,7 +676,7 @@ export default function Settings({ config, onSaveConfig }) {
                 className="input-field"
                 value={hfMirror}
                 onChange={(e) => handleHfMirrorChange(e.target.value)}
-                style={{ width: '100%', background: 'rgba(0,0,0,0.25)' }}
+                style={{ width: '100%' }}
               >
                 <option value="https://hf-mirror.com">HF Mirror (Russia/CIS High-Speed Mirror)</option>
                 <option value="https://huggingface.co">Hugging Face (Official Server - VPN required in RU)</option>
@@ -676,7 +728,6 @@ export default function Settings({ config, onSaveConfig }) {
                 className="input-field"
                 value={whisperCppBackend}
                 onChange={(e) => handleBackendChange(e.target.value)}
-                style={{ background: 'rgba(0,0,0,0.25)' }}
               >
                 <option value="cuda12">NVIDIA GPU (CUDA 12.4) - Рекомендуется для RTX 40/30/20</option>
                 <option value="cuda11">NVIDIA GPU (CUDA 11.8) - Для старых видеокарт GTX/RTX</option>
@@ -695,7 +746,6 @@ export default function Settings({ config, onSaveConfig }) {
                 className="input-field"
                 value={selectedModel}
                 onChange={(e) => handleModelChange(e.target.value)}
-                style={{ background: 'rgba(0,0,0,0.25)' }}
               >
                 <option value="Xenova/whisper-tiny">Tiny (75MB) - Самая быстрая</option>
                 <option value="Xenova/whisper-base">Base (140MB) - Сбалансированная</option>
@@ -831,7 +881,7 @@ export default function Settings({ config, onSaveConfig }) {
                 style={{ width: '100%' }}
               />
               <div style={{ fontSize: '10px', color: 'var(--text-secondary)' }}>
-                Use variables: <code style={{ color: '#fff' }}>{'{input_file}'}</code> (wav recording), <code style={{ color: '#fff' }}>{'{model_path}'}</code>, <code style={{ color: '#fff' }}>{'{lang}'}</code> (2-letter language code).
+                Use variables: <code style={{ color: 'var(--accent-blue)' }}>{'{input_file}'}</code> (wav recording), <code style={{ color: 'var(--accent-blue)' }}>{'{model_path}'}</code>, <code style={{ color: 'var(--accent-blue)' }}>{'{lang}'}</code> (2-letter language code).
               </div>
             </div>
 

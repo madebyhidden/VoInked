@@ -201,7 +201,7 @@ export default function AiAssistant({ config }) {
       </div>
 
       {/* Chat Area */}
-      <div className="glass-panel" style={{ flex: 1, padding: '16px', display: 'flex', flexDirection: 'column', gap: '12px', overflowY: 'auto', marginBottom: '16px', background: 'rgba(0,0,0,0.15)' }}>
+      <div className="glass-panel" style={{ flex: 1, padding: '16px', display: 'flex', flexDirection: 'column', gap: '12px', overflowY: 'auto', marginBottom: '16px', background: 'rgba(0,0,0,0.02)' }}>
         {messages.map((msg) => (
           <div 
             key={msg.id} 
@@ -284,7 +284,7 @@ export default function AiAssistant({ config }) {
             placeholder="Задай мне вопрос здесь..." 
             value={inputText}
             onChange={(e) => setInputText(e.target.value)}
-            style={{ flex: 1, height: '48px', borderRadius: '24px', padding: '0 18px', background: 'rgba(0,0,0,0.2)' }}
+            style={{ flex: 1, height: '48px', borderRadius: '24px', padding: '0 18px' }}
           />
           <button 
             type="submit" 
